@@ -1,0 +1,92 @@
+Pacman Game Python
+
+Game Info
+- Landscape game window
+- Ghost character opponents 
+- Pacman Player Character
+- Game Berries (regular)
+- Game Power-up Berries
+- Game Obstacle
+
+Game Details and Objectives
+- has to collect all game berries to finish the game
+- the 4 ghosts roaming on the whole obstacle that if you ran on, will cause to decrease life by 1
+- collecting big berries will turn ghosts into blinking color of blue and may give you ability to eat the ghosts in the game for a given time only
+	- Pacman will burp their eyes, and will automatically return to their base for respawn
+	- After the ghosts were back at the base, they will respawn normally (no blinking blue because they aren't eatable anymore unless you consume another ppower-up berry)
+- the game will randomly summon a cherry or strawberry for additional points
+- after you finish eat all the berries, you'll move in to the next round. Same objectives and obstacles, faster enemy movements.
+
+Game Visual Details
+- has one map format for any levels
+- berries were scattered from the entire game box obstacle (normal and Power-up berries)
+- has 4 enemy ghosts
+- has 1 player (Pacman)
+
+
+Game Logics
+- Algorithm Used >> Depth for Search, Breath for search
+	- for ghosts in chasing Pacman
+
+
+~~~~~~
+
+Pacman Game Objects
+
+Cell
+- each cell block (imaginary) contains the ability to store berries and serve as way for ghosts and Pacman.
+- if the cell = 0 (means empty/null). If the cell == 1 (means occupied), the cell will serve as wall/barricade for the ghost and Pacman.
+
+Maze/Obstacle
+- the obstacle was constructed by the cells mapped altogether.
+- The Maze/Obstacle class will serve as the bridge for the berries, ghosts, and Pacman to interact by using the cells
+- The Maze/Obstacle also configures what the ability to give to Pacman if ever Pacman ate a power-up berry.
+
+Pacman
+- moves according to the pressed keys with assigned directions to move on
+
+Ghosts
+- uses "Breath for search, Depth for search" algorithm where the ghosts try to choose each path it sees and try to get depth with it until it found Pacman, and if not, it will get back and try other track to search
+- random move can also be used where the ghost can pick whatever move they available until they catch Pacman
+
+Berry
+- berry can an ordinary or power-up, it is where also sprite will be based on
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Map Layout
+
+28x36 tiles (3:4 board ratio), 8x8 pixel eaxch tile, total width and height of 224 x 288
+
+Map of 28x31 tiles
+[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+[1, , , , , , , , , , , , , , , , , , , , , , , , , , ,1]
+[1, ,1,1,1,1, ,1,1,1,1,1, ,1,1, ,1,1,1,1,1, ,1,1,1,1, ,1]
+[1, ,1,1,1,1, ,1,1,1,1,1, ,1,1, ,1,1,1,1,1, ,1,1,1,1, ,1]
+[1, , , , , , ,1,1, , , , ,1,1, , , , ,1,1, , , , , , ,1]
+[1,1,1, ,1,1, ,1,1, ,1,1, ,1,1, ,1,1, ,1,1, ,1,1, ,1,1,1]
+[ , ,1, ,1,1, ,1,1, ,1,1, ,1,1, ,1,1, ,1,1, ,1,1, ,1, , ]
+[1,1,1, ,1,1, ,1,1, ,1,1, ,1,1, ,1,1, ,1,1, ,1,1, ,1,1,1]
+[1, , , ,1,1, , , , ,1,1, , , , ,1,1, , , , ,1,1, , , ,1]
+[1, ,1,1,1,1,1,1,1, ,1,1,1,1,1,1,1,1, ,1,1,1,1,1,1,1, ,1]
+[1, ,1,1,1,1,1,1,1, ,1,1,1,1,1,1,1,1, ,1,1,1,1,1,1,1, ,1]
+[1, , , , , , , , , , , , , , , , , , , , , , , , , , ,1]
+[1,1,1, ,1,1,1,1,1, ,1,1,1, , ,1,1,1, ,1,1,1,1,1, ,1,1,1]
+[1,1,1, ,1,1,1,1,1, ,1, , , , , , ,1, ,1,1,1,1,1, ,1,1,1]
+[ , , , , , , ,1,1, ,1, , , , , , ,1, ,1,1, , , , , , , ]
+[1,1,1, ,1,1, ,1,1, ,1, , , , , , ,1, ,1,1, ,1,1, ,1,1,1]
+[1,1,1, ,1,1, ,1,1, ,1,1,1,1,1,1,1,1, ,1,1, ,1,1, ,1,1,1]
+[1, , , ,1,1, , , , , , , , , , , , , , , , ,1,1, , , ,1]
+[1, ,1,1,1,1,1,1,1, ,1,1,1,1,1,1,1,1, ,1,1,1,1,1,1,1, ,1]
+[1, ,1,1,1,1,1,1,1, ,1,1,1,1,1,1,1,1, ,1,1,1,1,1,1,1, ,1]
+[1, , , , , , , , , , , , ,1,1, , , , , , , , , , , , ,1]
+[1,1,1,1, ,1,1,1,1,1,1,1, ,1,1, ,1,1,1,1,1,1,1, ,1,1,1,1]
+[1,1,1,1, ,1,1,1,1,1,1,1, ,1,1, ,1,1,1,1,1,1,1, ,1,1,1,1]
+[1, , , , ,1,1, , , , , , , , , , , , , , ,1,1, , , , ,1]
+[1, ,1,1, ,1,1, ,1,1, ,1,1,1,1,1,1, ,1,1, ,1,1, ,1,1, ,1]
+[1, ,1,1, ,1,1, ,1,1, ,1,1,1,1,1,1, ,1,1, ,1,1, ,1,1, ,1]
+[1, ,1,1, , , , ,1,1, , , ,1,1, , , ,1,1, , , , ,1,1, ,1]
+[1, ,1,1,1,1,1, ,1,1,1,1, ,1,1, ,1,1,1,1, ,1,1,1,1,1, ,1]
+[1, ,1,1,1,1,1, ,1,1,1,1, ,1,1, ,1,1,1,1, ,1,1,1,1,1, ,1]
+[1, , , , , , , , , , , , , , , , , , , , , , , , , , ,1]
+[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
