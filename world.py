@@ -1,13 +1,14 @@
 import pygame
 
 from pac import Pac
-from settings import WIDTH, HEIGHT, CHAR_SIZE
+from settings import WIDTH, HEIGHT, CHAR_SIZE, MAP
+from cell import Cell
 
 class World:
 	def __init__(self, screen):
 		self.screen = screen
 
-		self.player = pygame.sprite.GroupSingle()
+		# self.player = pygame.sprite.GroupSingle()	# temporarily removed
 		self.ghosts = pygame.sprite.Group()
 		# self.display = Display(self.screen)
 
@@ -21,7 +22,17 @@ class World:
 	# create and add player to the screen
 	def _generate_world(self):
 		player_pos = ((WIDTH // 2) - (CHAR_SIZE // 2), (HEIGHT // 2) - (CHAR_SIZE // 2))
-		self.player.add(Pac(player_pos, CHAR_SIZE))
+		# self.player.add(Pac(player_pos, CHAR_SIZE))	# temporarily removed
+		
+		# add obstacle here
+		# cells = []
+		# for row in MAP:
+		# 	c_width, c_height = (WIDTH // len(row)), (HEIGHT // len(MAP))
+		# 	for char in row:
+		# 		if char == "1":
+		# 			cells.append(Cell(c_width, c_height, "walled"))
+		# 		elif char == " ":
+		# 			cells.append(Cell(c_width, c_height, "open"))
 
 
 	# display nav
@@ -48,5 +59,5 @@ class World:
 
 	def update(self):
 		# player ship rendering
-		self.player.update(self.screen)
-		# self.player.draw(self.screen)
+		# self.player.update(self.screen)	# temporarily removed
+		# self.player.draw(self.screen)		# temporarily removed

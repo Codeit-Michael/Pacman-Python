@@ -1,6 +1,7 @@
 import pygame
 from random import choice
 
+# revise cell class, change visited var to `is_open` or something
 class Cell:
 	def __init__(self, x, y, thickness):
 		self.x, self.y = x, y

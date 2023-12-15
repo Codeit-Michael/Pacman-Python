@@ -90,3 +90,23 @@ Map of 28x31 tiles
 [1, ,1,1,1,1,1, ,1,1,1,1, ,1,1, ,1,1,1,1, ,1,1,1,1,1, ,1]
 [1, , , , , , , , , , , , , , , , , , , , , , , , , , ,1]
 [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+
+~~~~
+To consider when creting the map
+- Map layout
+- Creating cells
+- Sculpting the map
+
+steps 
+1. create the tabular form of the map
+2. generate cells depending on the characters from the table
+	a. if character == 1, blocked = True
+	b. elif character == 0/" ", blocked = False
+3. draw/render the cells on the screen
+	a. if blocked, draw walls
+	b. elif not blocked, pass
+
+
+[/] analyze world class
+[ ] add cell creator in generate_world() function
+[ ] add walls
