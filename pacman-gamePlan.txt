@@ -105,8 +105,3 @@ steps
 3. draw/render the cells on the screen
 	a. if blocked, draw walls
 	b. elif not blocked, pass
-
-
-[/] analyze world class
-[ ] add cell creator in generate_world() function
-[ ] add walls

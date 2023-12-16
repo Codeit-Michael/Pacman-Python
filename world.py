@@ -25,14 +25,14 @@ class World:
 		# self.player.add(Pac(player_pos, CHAR_SIZE))	# temporarily removed
 		
 		# add obstacle here
-		# cells = []
-		# for row in MAP:
-		# 	c_width, c_height = (WIDTH // len(row)), (HEIGHT // len(MAP))
-		# 	for char in row:
-		# 		if char == "1":
-		# 			cells.append(Cell(c_width, c_height, "walled"))
-		# 		elif char == " ":
-		# 			cells.append(Cell(c_width, c_height, "open"))
+		self.cells = []
+		for y_index, col in enumerate(MAP):
+			cell_size = ((WIDTH // len(col)), (HEIGHT // len(MAP)))
+			for x_index, char in enumerate(col):
+				if char == "1":
+					self.cells.append(Cell(x_index, y_index, cell_size))
+				elif char == " ":
+					self.cells.append(Cell(x_index, y_index, cell_size, is_open = True))
 
 
 	# display nav
@@ -61,3 +61,4 @@ class World:
 		# player ship rendering
 		# self.player.update(self.screen)	# temporarily removed
 		# self.player.draw(self.screen)		# temporarily removed
+		[cell.draw(self.screen) for cell in self.cells]
