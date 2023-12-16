@@ -24,7 +24,7 @@ class World:
 		player_pos = ((WIDTH // 2) - (CHAR_SIZE // 2), (HEIGHT // 2) - (CHAR_SIZE // 2))
 		# self.player.add(Pac(player_pos, CHAR_SIZE))	# temporarily removed
 		
-		# add obstacle here
+		# renders obstacle from the MAP table
 		self.cells = []
 		for y_index, col in enumerate(MAP):
 			cell_size = ((WIDTH // len(col)), (HEIGHT // len(MAP)))

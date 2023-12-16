@@ -92,7 +92,7 @@ Map of 28x31 tiles
 [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 
 ~~~~
-To consider when creting the map
+To consider when creating the map
 - Map layout
 - Creating cells
 - Sculpting the map
@@ -105,3 +105,24 @@ steps
 3. draw/render the cells on the screen
 	a. if blocked, draw walls
 	b. elif not blocked, pass
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Adding Player
+
+DIFFERENT APPROACHES:
+~ Same code as the player in maze game
+~ Convert obstacle cells into sprite groups so it is easier to detect if a direction is blocked
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Adding Berries
+- convert " " characters from empty to berries occupied
+- sneak some "s" character to empty spaces (" " charaters) for Special/Power-up berries
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Adding Ghosts
+- spawn on the mid section
+- give the movement bfs dfs algo (from creating the maze obstacle)
+- render and call in the Main() class
