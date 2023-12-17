@@ -111,8 +111,17 @@ steps
 Adding Player
 
 DIFFERENT APPROACHES:
-~ Same code as the player in maze game
 ~ Convert obstacle cells into sprite groups so it is easier to detect if a direction is blocked
+	~ create different sprite group for open and walled cell
+	Q: How to detect if there is a wall where player can't pass?
+		~ use "rect.collidepoint" or "rect.collidelist"
+		`if key_pressed(dir) and not collide_to_wall, move()`
+		* may let the player to only move in open cells group
+			Q: How to make it only move inside open cells?
+
+~ Same code as the player in maze game
+
+Remodel the map, add chars for Pacman, Ghosts, Berries (also the power-up ones)
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

@@ -9,7 +9,10 @@ class World:
 		self.screen = screen
 
 		# self.player = pygame.sprite.GroupSingle()	# temporarily removed
-		self.ghosts = pygame.sprite.Group()
+		# self.ghosts = pygame.sprite.Group()
+		self.walls = pygame.sprite.Group()
+		self.path = pygame.sprite.Group()
+
 		# self.display = Display(self.screen)
 
 		self.game_over = False
@@ -25,14 +28,13 @@ class World:
 		# self.player.add(Pac(player_pos, CHAR_SIZE))	# temporarily removed
 		
 		# renders obstacle from the MAP table
-		self.cells = []
 		for y_index, col in enumerate(MAP):
 			cell_size = ((WIDTH // len(col)), (HEIGHT // len(MAP)))
 			for x_index, char in enumerate(col):
 				if char == "1":
-					self.cells.append(Cell(x_index, y_index, cell_size))
+					self.walls.add(Cell(x_index, y_index, cell_size))
 				elif char == " ":
-					self.cells.append(Cell(x_index, y_index, cell_size, is_open = True))
+					self.path.add(Cell(x_index, y_index, cell_size, is_open = True))
 
 
 	# display nav
@@ -61,4 +63,6 @@ class World:
 		# player ship rendering
 		# self.player.update(self.screen)	# temporarily removed
 		# self.player.draw(self.screen)		# temporarily removed
-		[cell.draw(self.screen) for cell in self.cells]
+		
+		[path.update(self.screen) for path in self.path.sprites()]
+		[wall.update(self.screen) for wall in self.walls.sprites()]

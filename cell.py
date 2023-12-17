@@ -1,7 +1,8 @@
 import pygame
 
-class Cell:
+class Cell(pygame.sprite.Sprite):
 	def __init__(self, row, col, cell_size, is_open = False):
+		super().__init__()
 		self.row = row
 		self.col = col
 		self.cell_size = cell_size
@@ -10,19 +11,14 @@ class Cell:
 		self.abs_x = row * self.width
 		self.abs_y = col * self.height
 
-		self.rect = pygame.Rect(
-			self.abs_x,
-			self.abs_y,
-			self.width,
-			self.height
-		)
+		self.rect = pygame.Rect(self.abs_x,self.abs_y,self.width,self.height)
 
 		self.is_open = is_open
 
 		self.occupying_piece = None
 
-	def draw(self, display):
+	def update(self, screen):
 		if self.is_open:
-			pygame.draw.rect(display, (0,0,0), self.rect)
+			pygame.draw.rect(screen, (0,0,0), self.rect)
 		else:
-			pygame.draw.rect(display, (100,100,100), self.rect)
+			pygame.draw.rect(screen, (100,100,100), self.rect)
