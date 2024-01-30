@@ -1,7 +1,9 @@
-WIDTH, HEIGHT = 476, 527
+BOARD_RATIO = (28, 31)
+CHAR_SIZE = 16
 
-PLAYER_SPEED = 3
-CHAR_SIZE = 20
+WIDTH, HEIGHT = (BOARD_RATIO[0] * CHAR_SIZE, BOARD_RATIO[1] * CHAR_SIZE)
+
+PLAYER_SPEED = CHAR_SIZE // 4
 
 MAP = [
 	["1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1"],

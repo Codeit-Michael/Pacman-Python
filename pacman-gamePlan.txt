@@ -135,3 +135,33 @@ Adding Ghosts
 - spawn on the mid section
 - give the movement bfs dfs algo (from creating the maze obstacle)
 - render and call in the Main() class
+
+~~~~~~~~~~~~~~~~~~~~~~
+
+Smooth moving 
+
+	```
+	if direction = True
+		if current_cell,next_cell[direction] == True: (open)
+			move_ip(next_cell.x, next_cell.y)
+
+	```
+~~~~~~~~~~~~~~~~~~~~~~
+
+Smooth controlling
+
+```
+if key_pressed:
+	next_cell = current_cell.neighbor_cell[direction[key_pressed]]
+	if next_cell == True:
+		for dir in player.move_direction:
+			if dir[key_pressed]:
+				dir[key_pressed] = True
+			else:
+				dir[key_pressed] = False
+
+```
+
+
+if a direction is clicked and is True, other direction will be set to False. And while the direction is True, it will keep on moving till next tile for the said direction is False,
+except if another direction was clicked and is True.

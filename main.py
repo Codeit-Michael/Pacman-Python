@@ -15,7 +15,7 @@ class Main:
 	def main(self):
 		world = World(self.screen)
 		while True:
-			self.screen.fill("black")
+			self.screen.fill("white")
 
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
