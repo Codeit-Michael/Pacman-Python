@@ -18,21 +18,24 @@ class Pac(pygame.sprite.Sprite):
 		self.pac_speed = PLAYER_SPEED
 		self.color = (250, 120, 60)
 	
+		self.direction_move = {"left": False, "up": False, "right": False, "down": False}
+
 		# pac status
 		self.life = 3
 
 
 	def move_left(self):
-		self.rect.x -= self.pac_speed
+		self.rect.move_ip(-self.pac_speed, 0)
 
 	def move_up(self):
-		self.rect.y -= self.pac_speed
+		self.rect.move_ip(0, -self.pac_speed)
 
 	def move_right(self):
-		self.rect.x += self.pac_speed
+		self.rect.move_ip(self.pac_speed, 0)
 
 	def move_bottom(self):
-		self.rect.y += self.pac_speed
+		self.rect.move_ip(0, self.pac_speed)
 
 	def update(self, screen):
+		# to change: dont just draw, make the update moving (move and move_ip matter)
 		pygame.draw.rect(screen, self.color, self.rect)
