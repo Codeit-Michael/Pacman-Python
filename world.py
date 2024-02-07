@@ -35,6 +35,8 @@ class World:
 				elif char == " ":
 					self.path.add(Cell(x_index, y_index, (CHAR_SIZE, CHAR_SIZE), is_open = True))
 
+		self.walls_collide_list = [wall.rect for wall in self.walls.sprites()]	
+
 
 	# display nav
 	def add_additionals(self):
