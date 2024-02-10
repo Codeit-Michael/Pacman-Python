@@ -1,7 +1,7 @@
 import pygame
 
 from pac import Pac
-from settings import WIDTH, HEIGHT, CHAR_SIZE, MAP
+from settings import WIDTH, HEIGHT, CHAR_SIZE, MAP, PLAYER_SPEED
 from cell import Cell
 
 class World:
@@ -19,6 +19,10 @@ class World:
 		self.player_score = 0
 		self.game_level = 1
 
+		self.directions = {'a': (-PLAYER_SPEED, 0), 'd': (PLAYER_SPEED, 0), 'w': (0, -PLAYER_SPEED), 's': (0, PLAYER_SPEED)}
+		self.keys = {'a': pygame.K_a, 'd': pygame.K_d, 'w': pygame.K_w, 's': pygame.K_s}
+		self.direction = (0, 0)
+
 		self._generate_world()
 
 
@@ -35,7 +39,7 @@ class World:
 				elif char == " ":
 					self.path.add(Cell(x_index, y_index, (CHAR_SIZE, CHAR_SIZE), is_open = True))
 
-		self.walls_collide_list = [wall.rect for wall in self.walls.sprites()]	
+		self.walls_collide_list = [wall.rect for wall in self.walls.sprites()]
 
 
 	# display nav
@@ -43,23 +47,11 @@ class World:
 		pass
 
 
-	def _detect_collisions(self):
-		# checks if player bullet hits the enemies (aliens)
-		player_attack_collision = pygame.sprite.groupcollide(self.aliens, self.player.sprite.player_bullets, True, True)
-		if player_attack_collision:
-			self.player_score += 10
-
-		# checks if the aliens' bullet hit the player
-		for alien in self.aliens.sprites():	
-			alien_attack_collision = pygame.sprite.groupcollide(alien.bullets, self.player, True, False)
-			if alien_attack_collision:
-				self.player.sprite.life -= 1
-				break
-
-		# checks if the aliens hit the player
-		alien_to_player_collision = pygame.sprite.groupcollide(self.aliens, self.player, True, False)
-		if alien_to_player_collision:
-			self.player.sprite.life -= 1
+	def is_collide(self, x, y):
+		tmp_rect = self.player.sprite.rect.move(x, y)
+		if tmp_rect.collidelist(self.walls_collide_list) == -1:
+			return False
+		return True
 
 
 	def player_move(self):
@@ -82,6 +74,14 @@ class World:
 	def update(self):
 		[path.update(self.screen) for path in self.path.sprites()]
 		[wall.update(self.screen) for wall in self.walls.sprites()]
+
+		pressed_key = pygame.key.get_pressed()
+		for key, key_value in self.keys.items():
+			if pressed_key[key_value] and not self.is_collide(*self.directions[key]):
+				self.direction = self.directions[key]
+				break
+		if not self.is_collide(*self.direction):
+				self.player.sprite.rect.move_ip(self.direction)
 
 		# player ship rendering
 		self.player.update(self.screen)

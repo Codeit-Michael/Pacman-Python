@@ -22,7 +22,7 @@ class Main:
 					pygame.quit()
 					sys.exit()
 
-			world.player_move()
+			# world.player_move()
 			world.update()
 			pygame.display.update()
 			self.FPS.tick(30)
