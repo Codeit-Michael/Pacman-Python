@@ -19,8 +19,8 @@ class World:
 		self.player_score = 0
 		self.game_level = 1
 
-		self.directions = {'a': (-PLAYER_SPEED, 0), 'd': (PLAYER_SPEED, 0), 'w': (0, -PLAYER_SPEED), 's': (0, PLAYER_SPEED)}
-		self.keys = {'a': pygame.K_a, 'd': pygame.K_d, 'w': pygame.K_w, 's': pygame.K_s}
+		self.directions = {'left': (-PLAYER_SPEED, 0), 'right': (PLAYER_SPEED, 0), 'up': (0, -PLAYER_SPEED), 'down': (0, PLAYER_SPEED)}
+		self.keys = {'left': pygame.K_a, 'right': pygame.K_d, 'up': pygame.K_w, 'down': pygame.K_s}
 		self.direction = (0, 0)
 
 		self._generate_world()
@@ -54,36 +54,21 @@ class World:
 		return True
 
 
-	def player_move(self):
-		keys = pygame.key.get_pressed()
-
-		if keys[pygame.K_a] and not self.game_over or keys[pygame.K_LEFT] and not self.game_over:
-			if self.player.sprite.rect.left > 0:
-				self.player.sprite.move_left()
-		elif keys[pygame.K_d] and not self.game_over or keys[pygame.K_RIGHT] and not self.game_over:
-			if self.player.sprite.rect.right < WIDTH:
-				self.player.sprite.move_right()
-		elif keys[pygame.K_w] and not self.game_over or keys[pygame.K_UP] and not self.game_over:
-			if self.player.sprite.rect.top > 0:
-				self.player.sprite.move_up()		
-		elif keys[pygame.K_s] and not self.game_over or keys[pygame.K_DOWN] and not self.game_over:
-			if self.player.sprite.rect.bottom < HEIGHT:
-				self.player.sprite.move_bottom()
-
-
 	def update(self):
 		[path.update(self.screen) for path in self.path.sprites()]
 		[wall.update(self.screen) for wall in self.walls.sprites()]
 
-		pressed_key = pygame.key.get_pressed()
-		for key, key_value in self.keys.items():
-			if pressed_key[key_value] and not self.is_collide(*self.directions[key]):
-				self.direction = self.directions[key]
-				break
-		if not self.is_collide(*self.direction):
-				self.player.sprite.rect.move_ip(self.direction)
+		# player movement
+		if not self.game_over:
+			pressed_key = pygame.key.get_pressed()
+			for key, key_value in self.keys.items():
+				if pressed_key[key_value] and not self.is_collide(*self.directions[key]):
+					self.direction = self.directions[key]
+					break
+			if not self.is_collide(*self.direction):
+					self.player.sprite.rect.move_ip(self.direction)
 
-		# player ship rendering
+		# pacman rendering
 		self.player.update(self.screen)
 		# self.player.draw(self.screen)		# temporarily removed
 	
