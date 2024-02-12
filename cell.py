@@ -21,4 +21,4 @@ class Cell(pygame.sprite.Sprite):
 		if self.is_open:
 			pygame.draw.rect(screen, (0,0,0), self.rect)
 		else:
-			pygame.draw.rect(screen, (100,100,100), self.rect)
+			pygame.draw.rect(screen, (0,0,200), self.rect)

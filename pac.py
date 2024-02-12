@@ -16,7 +16,7 @@ class Pac(pygame.sprite.Sprite):
 		# self.mask = pygame.mask.from_surface(self.image)
 		self.rect = pygame.Rect(self.x, self.y, CHAR_SIZE, CHAR_SIZE)
 		self.pac_speed = PLAYER_SPEED
-		self.color = (250, 120, 60)
+		self.color = pygame.Color("yellow")
 	
 		# pac status
 		self.life = 3

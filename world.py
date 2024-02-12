@@ -3,6 +3,7 @@ import pygame
 from pac import Pac
 from settings import WIDTH, HEIGHT, CHAR_SIZE, MAP, PLAYER_SPEED
 from cell import Cell
+from berry import Berry
 
 class World:
 	def __init__(self, screen):
@@ -12,6 +13,7 @@ class World:
 		# self.ghosts = pygame.sprite.Group()
 		self.walls = pygame.sprite.Group()
 		self.path = pygame.sprite.Group()
+		self.berries = pygame.sprite.Group()
 
 		# self.display = Display(self.screen)
 
@@ -38,6 +40,9 @@ class World:
 					self.walls.add(Cell(x_index, y_index, (CHAR_SIZE, CHAR_SIZE)))
 				elif char == " ":
 					self.path.add(Cell(x_index, y_index, (CHAR_SIZE, CHAR_SIZE), is_open = True))
+					self.berries.add(Berry((x_index, y_index), CHAR_SIZE // 4))
+				elif char == "n":
+					self.path.add(Cell(x_index, y_index, (CHAR_SIZE, CHAR_SIZE), is_open = True))
 
 		self.walls_collide_list = [wall.rect for wall in self.walls.sprites()]
 
@@ -55,8 +60,9 @@ class World:
 
 
 	def update(self):
-		[path.update(self.screen) for path in self.path.sprites()]
 		[wall.update(self.screen) for wall in self.walls.sprites()]
+		[path.update(self.screen) for path in self.path.sprites()]
+		[berry.update(self.screen) for berry in self.berries.sprites()]
 
 		# player movement
 		if not self.game_over:
