@@ -30,9 +30,6 @@ class World:
 
 	# create and add player to the screen
 	def _generate_world(self):
-		player_pos = ((WIDTH // 2) - (CHAR_SIZE // 2), (HEIGHT // 2) - (CHAR_SIZE // 2))
-		self.player.add(Pac(player_pos, CHAR_SIZE))
-		
 		# renders obstacle from the MAP table
 		for y_index, col in enumerate(MAP):
 			for x_index, char in enumerate(col):
@@ -43,6 +40,9 @@ class World:
 					self.berries.add(Berry((x_index, y_index), CHAR_SIZE // 4))
 				elif char == "n":
 					self.path.add(Cell(x_index, y_index, (CHAR_SIZE, CHAR_SIZE), is_open = True))
+				elif char == "p":
+					self.path.add(Cell(x_index, y_index, (CHAR_SIZE, CHAR_SIZE), is_open = True))
+					self.player.add(Pac((x_index, y_index), CHAR_SIZE))
 
 		self.walls_collide_list = [wall.rect for wall in self.walls.sprites()]
 
