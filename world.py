@@ -33,14 +33,17 @@ class World:
 		# renders obstacle from the MAP table
 		for y_index, col in enumerate(MAP):
 			for x_index, char in enumerate(col):
-				if char == "1":
+				if char == "1":	# for walls
 					self.walls.add(Cell(x_index, y_index, (CHAR_SIZE, CHAR_SIZE)))
-				elif char == " ":
+				elif char == " ":	 # for paths to be filled with berries
 					self.path.add(Cell(x_index, y_index, (CHAR_SIZE, CHAR_SIZE), is_open = True))
 					self.berries.add(Berry((x_index, y_index), CHAR_SIZE // 4))
-				elif char == "n":
+				elif char == "b":	# for big berries
 					self.path.add(Cell(x_index, y_index, (CHAR_SIZE, CHAR_SIZE), is_open = True))
-				elif char == "p":
+					self.berries.add(Berry((x_index, y_index), CHAR_SIZE // 2))
+				elif char == "n":	# for empty paths
+					self.path.add(Cell(x_index, y_index, (CHAR_SIZE, CHAR_SIZE), is_open = True))
+				elif char == "p":	# for Pacman's starting position 
 					self.path.add(Cell(x_index, y_index, (CHAR_SIZE, CHAR_SIZE), is_open = True))
 					self.player.add(Pac((x_index, y_index), CHAR_SIZE))
 
@@ -73,6 +76,12 @@ class World:
 					break
 			if not self.is_collide(*self.direction):
 					self.player.sprite.rect.move_ip(self.direction)
+
+			# teleporting to the other side of the map
+			if self.player.sprite.rect.right <= 0:
+				self.player.sprite.rect.x = WIDTH
+			elif self.player.sprite.rect.left >= WIDTH:
+				self.player.sprite.rect.x = 0
 
 		# pacman rendering
 		self.player.update(self.screen)
