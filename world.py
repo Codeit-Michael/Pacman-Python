@@ -77,6 +77,10 @@ class World:
 			if not self.is_collide(*self.direction):
 					self.player.sprite.rect.move_ip(self.direction)
 
+			for berry in self.berries.sprites():
+				if self.player.sprite.rect.colliderect(berry.rect):
+					berry.kill()
+
 			# teleporting to the other side of the map
 			if self.player.sprite.rect.right <= 0:
 				self.player.sprite.rect.x = WIDTH

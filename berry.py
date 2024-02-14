@@ -14,5 +14,5 @@ class Berry(pygame.sprite.Sprite):
 		self.abs_y = (self.col * CHAR_SIZE) + (CHAR_SIZE // 2)
 
 	def update(self, screen):
-		pygame.draw.circle(screen, self.color, (self.abs_x, self.abs_y), self.size, self.thickness)
+		self.rect = pygame.draw.circle(screen, self.color, (self.abs_x, self.abs_y), self.size, self.thickness)
 		
