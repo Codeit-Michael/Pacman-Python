@@ -22,6 +22,7 @@ class Pac(pygame.sprite.Sprite):
 	
 		# pac status
 		self.life = 3
+		self.pac_score = 0
 
 
 	def update(self, screen):
