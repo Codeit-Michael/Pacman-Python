@@ -201,3 +201,9 @@ if not is_collide(*direction):
 Adding Berries
 - if " "; create berry, add berry to SpriteGroupBerries
 - if pac.collidelist(SpriteGroupBerries); remove collided berry, add PacScore 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Adding Opponents
+- generate phase: update map for the spawn point of the ghosts
+- update phase: add ghosts algorithm move (breath for search, depth for search)
