@@ -206,4 +206,12 @@ Adding Berries
 
 Adding Opponents
 - generate phase: update map for the spawn point of the ghosts
+```
+if char == "g":
+	ghost_color = random.pick (and remove) a color
+		ghostSpriteGroup.add(Ghost(x,y), ghost_color)
+```
+
 - update phase: add ghosts algorithm move (breath for search, depth for search)
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

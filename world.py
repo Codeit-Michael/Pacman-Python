@@ -1,16 +1,17 @@
 import pygame
 
-from pac import Pac
 from settings import WIDTH, HEIGHT, CHAR_SIZE, MAP, PLAYER_SPEED
+from pac import Pac
 from cell import Cell
 from berry import Berry
+from ghost import Ghost
 
 class World:
 	def __init__(self, screen):
 		self.screen = screen
 
 		self.player = pygame.sprite.GroupSingle()
-		# self.ghosts = pygame.sprite.Group()
+		self.ghosts = pygame.sprite.Group()
 		self.walls = pygame.sprite.Group()
 		self.path = pygame.sprite.Group()
 		self.berries = pygame.sprite.Group()
@@ -43,9 +44,12 @@ class World:
 					self.berries.add(Berry((x_index, y_index), CHAR_SIZE // 2))
 				elif char == "n":	# for empty paths
 					self.path.add(Cell(x_index, y_index, (CHAR_SIZE, CHAR_SIZE), is_open = True))
+				elif char == "g":	# for Ghosts's starting position 
+					self.path.add(Cell(x_index, y_index, (CHAR_SIZE, CHAR_SIZE), is_open = True))
+					self.ghosts.add(Ghost((x_index, y_index)))
 				elif char == "p":	# for Pacman's starting position 
 					self.path.add(Cell(x_index, y_index, (CHAR_SIZE, CHAR_SIZE), is_open = True))
-					self.player.add(Pac((x_index, y_index), CHAR_SIZE))
+					self.player.add(Pac((x_index, y_index)))
 
 		self.walls_collide_list = [wall.rect for wall in self.walls.sprites()]
 
@@ -66,6 +70,7 @@ class World:
 		[wall.update(self.screen) for wall in self.walls.sprites()]
 		[path.update(self.screen) for path in self.path.sprites()]
 		[berry.update(self.screen) for berry in self.berries.sprites()]
+		[ghost.update(self.screen) for ghost in self.ghosts.sprites()]
 
 		# player movement
 		if not self.game_over:
