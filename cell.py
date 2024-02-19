@@ -19,6 +19,6 @@ class Cell(pygame.sprite.Sprite):
 
 	def update(self, screen):
 		if self.is_open:
-			pygame.draw.rect(screen, (0,0,0), self.rect)
+			pygame.draw.rect(screen, pygame.Color("black"), self.rect)
 		else:
-			pygame.draw.rect(screen, (0,0,200), self.rect)
+			pygame.draw.rect(screen, pygame.Color("blue2"), self.rect)

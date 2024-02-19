@@ -12,7 +12,7 @@ class Ghost(pygame.sprite.Sprite):
 
 		self.rect = pygame.Rect(self.abs_x, self.abs_y, CHAR_SIZE, CHAR_SIZE)
 		self.pac_speed = PLAYER_SPEED
-		self.color = pygame.Color("gray")
+		self.color = pygame.Color("gray48")
 
 
 	def update(self, screen):

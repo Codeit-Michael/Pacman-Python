@@ -8,7 +8,7 @@ class Berry(pygame.sprite.Sprite):
 		self.row = pos[0]
 		self.col= pos[1]
 		self.size = size
-		self.color = pygame.Color("red")
+		self.color = pygame.Color("violetred")
 		self.thickness = size
 		self.abs_x = (self.row * CHAR_SIZE) + (CHAR_SIZE // 2)
 		self.abs_y = (self.col * CHAR_SIZE) + (CHAR_SIZE // 2)
