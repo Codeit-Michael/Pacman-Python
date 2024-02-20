@@ -1,13 +1,11 @@
 import pygame
 
 class Cell(pygame.sprite.Sprite):
-	def __init__(self, row, col, cell_size, is_open = False):
+	def __init__(self, row, col, length, width, is_open = False):
 		super().__init__()
-		self.row = row
-		self.col = col
-		self.cell_size = cell_size
-		self.width = self.cell_size[0]
-		self.height = self.cell_size[1]
+		self.width = length
+		self.height = width
+		self.id = (row, col)
 		self.abs_x = row * self.width
 		self.abs_y = col * self.height
 

@@ -3,12 +3,11 @@ import pygame
 from settings import CHAR_SIZE, PLAYER_SPEED
 
 class Pac(pygame.sprite.Sprite):
-	def __init__(self, pos):
+	def __init__(self, row, col):
 		super().__init__()
-		self.row = pos[0]
-		self.col = pos[1]
-		self.abs_x = (self.row * CHAR_SIZE)
-		self.abs_y = (self.col * CHAR_SIZE)
+
+		self.abs_x = (row * CHAR_SIZE)
+		self.abs_y = (col * CHAR_SIZE)
 
 		# pac info 
 		# img_path = 'assets/pac/pac.png'

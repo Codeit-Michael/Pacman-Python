@@ -1,6 +1,6 @@
 import pygame
 
-from settings import WIDTH, HEIGHT, CHAR_SIZE, MAP, PLAYER_SPEED
+from settings import WIDTH, CHAR_SIZE, MAP, PLAYER_SPEED
 from pac import Pac
 from cell import Cell
 from berry import Berry
@@ -35,21 +35,21 @@ class World:
 		for y_index, col in enumerate(MAP):
 			for x_index, char in enumerate(col):
 				if char == "1":	# for walls
-					self.walls.add(Cell(x_index, y_index, (CHAR_SIZE, CHAR_SIZE)))
+					self.walls.add(Cell(x_index, y_index, CHAR_SIZE, CHAR_SIZE))
 				elif char == " ":	 # for paths to be filled with berries
-					self.path.add(Cell(x_index, y_index, (CHAR_SIZE, CHAR_SIZE), is_open = True))
-					self.berries.add(Berry((x_index, y_index), CHAR_SIZE // 4))
+					self.path.add(Cell(x_index, y_index, CHAR_SIZE, CHAR_SIZE, is_open = True))
+					self.berries.add(Berry(x_index, y_index, CHAR_SIZE // 4))
 				elif char == "b":	# for big berries
-					self.path.add(Cell(x_index, y_index, (CHAR_SIZE, CHAR_SIZE), is_open = True))
-					self.berries.add(Berry((x_index, y_index), CHAR_SIZE // 2))
+					self.path.add(Cell(x_index, y_index, CHAR_SIZE, CHAR_SIZE, is_open = True))
+					self.berries.add(Berry(x_index, y_index, CHAR_SIZE // 2))
 				elif char == "n":	# for empty paths
-					self.path.add(Cell(x_index, y_index, (CHAR_SIZE, CHAR_SIZE), is_open = True))
+					self.path.add(Cell(x_index, y_index, CHAR_SIZE, CHAR_SIZE, is_open = True))
 				elif char == "g":	# for Ghosts's starting position 
-					self.path.add(Cell(x_index, y_index, (CHAR_SIZE, CHAR_SIZE), is_open = True))
-					self.ghosts.add(Ghost((x_index, y_index)))
+					self.path.add(Cell(x_index, y_index, CHAR_SIZE, CHAR_SIZE, is_open = True))
+					self.ghosts.add(Ghost(x_index, y_index))
 				elif char == "p":	# for Pacman's starting position 
-					self.path.add(Cell(x_index, y_index, (CHAR_SIZE, CHAR_SIZE), is_open = True))
-					self.player.add(Pac((x_index, y_index)))
+					self.path.add(Cell(x_index, y_index, CHAR_SIZE, CHAR_SIZE, is_open = True))
+					self.player.add(Pac(x_index, y_index))
 
 		self.walls_collide_list = [wall.rect for wall in self.walls.sprites()]
 
@@ -70,7 +70,7 @@ class World:
 		[wall.update(self.screen) for wall in self.walls.sprites()]
 		[path.update(self.screen) for path in self.path.sprites()]
 		[berry.update(self.screen) for berry in self.berries.sprites()]
-		[ghost.update(self.screen) for ghost in self.ghosts.sprites()]
+		[ghost.update(self.screen, path_id_list = [cell.id for cell in self.path.sprites()]) for ghost in self.ghosts.sprites()]
 
 		# player movement
 		if not self.game_over:
@@ -80,7 +80,7 @@ class World:
 					self.direction = self.directions[key]
 					break
 			if not self.is_collide(*self.direction):
-					self.player.sprite.rect.move_ip(self.direction)
+				self.player.sprite.rect.move_ip(self.direction)
 
 			# pacman eating-berry effect
 			for berry in self.berries.sprites():
