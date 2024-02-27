@@ -15,15 +15,12 @@ class Ghost(pygame.sprite.Sprite):
 		self.color = pygame.Color("gray48")
 		self.move_directions = [(-1,0), (0,-1), (1,0), (0,1)]
 
-	def update(self, screen, path_id_list):
+	def update(self, screen, wall_id_list):
 		while True:
 			direction = random.choice(self.move_directions)
 			curr_x, curr_y = self.rect.x // CHAR_SIZE, self.rect.y // CHAR_SIZE
 			new_id = (curr_x + direction[0], curr_y  + direction[1])
-			if new_id in path_id_list:
-				# self.rect.x = new_id[0] * CHAR_SIZE
-				# self.rect.y = new_id[1] * CHAR_SIZE
-
+			if new_id not in wall_id_list:
 				self.rect.move_ip(direction)
 
 				pygame.draw.rect(screen, self.color, self.rect)
