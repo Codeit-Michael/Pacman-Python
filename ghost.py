@@ -16,7 +16,6 @@ class Ghost(pygame.sprite.Sprite):
 		self.move_directions = [(-1,0), (0,-1), (1,0), (0,1)]
 
 		self.directions = {'left': (-PLAYER_SPEED, 0), 'right': (PLAYER_SPEED, 0), 'up': (0, -PLAYER_SPEED), 'down': (0, PLAYER_SPEED)}
-		# self.keys = {'left': pygame.K_LEFT, 'right': pygame.K_RIGHT, 'up': pygame.K_UP, 'down': pygame.K_DOWN}
 		self.keys = ['left', 'right', 'up', 'down']
 		self.direction = (0, 0)
 
