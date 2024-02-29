@@ -29,11 +29,20 @@ class Ghost(pygame.sprite.Sprite):
 
 	def update(self, screen, walls_collide_list):
 		# ghost movement
-		random_move = random.choice(self.keys)
-		if not self.is_collide(*self.directions[random_move], walls_collide_list):
-			self.direction = self.directions[random_move]
+		available_moves = []
+		for key in self.keys:
+			if not self.is_collide(*self.directions[key], walls_collide_list):
+				available_moves.append(key)
+		
+		randomizing = False if len(available_moves) <= 2 and self.direction != (0,0) else True
+		# 60% chance of randomizing ghost move
+		if randomizing and random.randrange( 0,100 ) <= 60:
+			self.direction = self.directions[random.choice(available_moves)]
+
 		if not self.is_collide(*self.direction, walls_collide_list):
 			self.rect.move_ip(self.direction)
+		else:
+			self.direction = (0,0)
 
 		# teleporting to the other side of the map
 		if self.rect.right <= 0:
