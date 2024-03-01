@@ -2,7 +2,7 @@ import pygame
 import random
 import time
 
-from settings import WIDTH, CHAR_SIZE, PLAYER_SPEED
+from settings import WIDTH, CHAR_SIZE, GHOST_SPEED
 
 class Ghost(pygame.sprite.Sprite):
 	def __init__(self, row, col):
@@ -11,14 +11,17 @@ class Ghost(pygame.sprite.Sprite):
 		self.abs_y = (col * CHAR_SIZE)
 
 		self.rect = pygame.Rect(self.abs_x, self.abs_y, CHAR_SIZE, CHAR_SIZE)
-		self.pac_speed = PLAYER_SPEED
+		self.pac_speed = GHOST_SPEED
 		self.color = pygame.Color("gray48")
 		self.move_directions = [(-1,0), (0,-1), (1,0), (0,1)]
 
-		self.directions = {'left': (-PLAYER_SPEED, 0), 'right': (PLAYER_SPEED, 0), 'up': (0, -PLAYER_SPEED), 'down': (0, PLAYER_SPEED)}
+		self.directions = {'left': (-GHOST_SPEED, 0), 'right': (GHOST_SPEED, 0), 'up': (0, -GHOST_SPEED), 'down': (0, GHOST_SPEED)}
 		self.keys = ['left', 'right', 'up', 'down']
 		self.direction = (0, 0)
 
+	def move_to_start_pos(self):
+		self.rect.x = self.abs_x
+		self.rect.y = self.abs_y
 
 	def is_collide(self, x, y, walls_collide_list):
 		tmp_rect = self.rect.move(x, y)

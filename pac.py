@@ -18,10 +18,16 @@ class Pac(pygame.sprite.Sprite):
 		self.rect = pygame.Rect(self.abs_x, self.abs_y, CHAR_SIZE, CHAR_SIZE)
 		self.pac_speed = PLAYER_SPEED
 		self.color = pygame.Color("yellow")
+		self.immune_time = 0
 	
 		# pac status
 		self.life = 3
 		self.pac_score = 0
+
+
+	def move_to_start_pos(self):
+		self.rect.x = self.abs_x
+		self.rect.y = self.abs_y
 
 
 	def update(self, screen):

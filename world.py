@@ -1,4 +1,5 @@
 import pygame
+import time
 
 from settings import WIDTH, CHAR_SIZE, MAP, PLAYER_SPEED
 from pac import Pac
@@ -18,6 +19,7 @@ class World:
 		# self.display = Display(self.screen)
 
 		self.game_over = False
+		self.reset_pos = False
 		self.player_score = 0
 		self.game_level = 1
 
@@ -38,7 +40,7 @@ class World:
 				elif char == " ":	 # for paths to be filled with berries
 					self.berries.add(Berry(x_index, y_index, CHAR_SIZE // 4))
 				elif char == "B":	# for big berries
-					self.berries.add(Berry(x_index, y_index, CHAR_SIZE // 2))
+					self.berries.add(Berry(x_index, y_index, CHAR_SIZE // 2, is_power_up=True))
 				elif char == "g":	# for Ghosts's starting position 
 					self.ghosts.add(Ghost(x_index, y_index))
 				elif char == "p":	# for Pacman's starting position 
@@ -60,10 +62,6 @@ class World:
 
 
 	def update(self):
-		[wall.update(self.screen) for wall in self.walls.sprites()]
-		[berry.update(self.screen) for berry in self.berries.sprites()]
-		[ghost.update(self.screen, self.walls_collide_list) for ghost in self.ghosts.sprites()]
-
 		# player movement
 		if not self.game_over:
 			pressed_key = pygame.key.get_pressed()
@@ -74,19 +72,40 @@ class World:
 			if not self.is_collide(*self.direction):
 				self.player.sprite.rect.move_ip(self.direction)
 
-			# pacman eating-berry effect
-			for berry in self.berries.sprites():
-				if self.player.sprite.rect.colliderect(berry.rect):
-					berry.kill()
-					self.player.sprite.pac_score += 10
-
 			# teleporting to the other side of the map
 			if self.player.sprite.rect.right <= 0:
 				self.player.sprite.rect.x = WIDTH
 			elif self.player.sprite.rect.left >= WIDTH:
 				self.player.sprite.rect.x = 0
 
-		# pacman rendering
+			# pacman eating-berry effect
+			for berry in self.berries.sprites():
+				if self.player.sprite.rect.colliderect(berry.rect):
+					if berry.power_up:
+						print(True)
+					berry.kill()
+					self.player.sprite.pac_score += 10
+
+			# pacman getting captured by ghosts
+			for ghost in self.ghosts.sprites():
+				if self.player.sprite.rect.colliderect(ghost.rect):
+					time.sleep(2)
+					self.player.sprite.life -= 1
+					self.reset_pos = True
+					break
+
+			if self.player.sprite.life == 0:
+				self.game_over = True
+
+			# reset Pac and Ghosts posiion after PacMan get captured
+			if self.reset_pos and not self.game_over:
+				[ghost.move_to_start_pos() for ghost in self.ghosts.sprites()]
+				self.player.sprite.move_to_start_pos()
+				self.direction = (0,0)
+				self.reset_pos = False
+
+		# rendering
+		[wall.update(self.screen) for wall in self.walls.sprites()]
+		[berry.update(self.screen) for berry in self.berries.sprites()]
+		[ghost.update(self.screen, self.walls_collide_list) for ghost in self.ghosts.sprites()]
 		self.player.update(self.screen)
-		# self.player.draw(self.screen)		# temporarily removed
-	
