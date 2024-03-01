@@ -82,7 +82,7 @@ class World:
 			for berry in self.berries.sprites():
 				if self.player.sprite.rect.colliderect(berry.rect):
 					if berry.power_up:
-						print(True) # convert to immunity and ability to eat ghost
+						self.player.sprite.immune_time = 210 # convert to immunity and ability to eat ghost
 						self.player.sprite.pac_score += 50
 					else:
 						self.player.sprite.pac_score += 10
@@ -91,23 +91,29 @@ class World:
 			# PacMan getting captured by ghosts
 			for ghost in self.ghosts.sprites():
 				if self.player.sprite.rect.colliderect(ghost.rect):
-					time.sleep(2)
-					self.player.sprite.life -= 1
-					self.reset_pos = True
-					break
+					if not self.player.sprite.immune:
+						time.sleep(2)
+						self.player.sprite.life -= 1
+						self.reset_pos = True
+						break
+					else:
+						ghost.move_to_start_pos()
+						self.player.sprite.pac_score += 100
 
 			if self.player.sprite.life == 0:
 				self.game_over = True
-
-			# reset Pac and Ghosts position after PacMan get captured
-			if self.reset_pos and not self.game_over:
-				[ghost.move_to_start_pos() for ghost in self.ghosts.sprites()]
-				self.player.sprite.move_to_start_pos()
-				self.direction = (0,0)
-				self.reset_pos = False
 
 		# rendering
 		[wall.update(self.screen) for wall in self.walls.sprites()]
 		[berry.update(self.screen) for berry in self.berries.sprites()]
 		[ghost.update(self.screen, self.walls_collide_list) for ghost in self.ghosts.sprites()]
 		self.player.update(self.screen)
+
+		# reset Pac and Ghosts position after PacMan get captured
+		if self.reset_pos and not self.game_over:
+			[ghost.move_to_start_pos() for ghost in self.ghosts.sprites()]
+			self.player.sprite.move_to_start_pos()
+			self.direction = (0,0)
+			self.reset_pos = False
+
+		print(self.player.sprite.immune)

@@ -19,6 +19,7 @@ class Pac(pygame.sprite.Sprite):
 		self.pac_speed = PLAYER_SPEED
 		self.color = pygame.Color("yellow")
 		self.immune_time = 0
+		self.immune = False
 	
 		# pac status
 		self.life = 3
@@ -32,3 +33,7 @@ class Pac(pygame.sprite.Sprite):
 
 	def update(self, screen):
 		pygame.draw.rect(screen, self.color, self.rect)
+
+		# convert to countdown instead of FPS if possible
+		self.immune = True if self.immune_time > 0 else False
+		self.immune_time -= 1 if self.immune_time > 0 else 0
