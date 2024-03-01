@@ -5,7 +5,7 @@ from world import World
 pygame.init()
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Pacman")
+pygame.display.set_caption("PacMan")
 
 class Main:
 	def __init__(self, screen):

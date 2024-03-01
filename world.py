@@ -43,7 +43,7 @@ class World:
 					self.berries.add(Berry(x_index, y_index, CHAR_SIZE // 2, is_power_up=True))
 				elif char == "g":	# for Ghosts's starting position 
 					self.ghosts.add(Ghost(x_index, y_index))
-				elif char == "p":	# for Pacman's starting position 
+				elif char == "p":	# for PacMan's starting position 
 					self.player.add(Pac(x_index, y_index))
 
 		self.walls_collide_list = [wall.rect for wall in self.walls.sprites()]
@@ -78,15 +78,17 @@ class World:
 			elif self.player.sprite.rect.left >= WIDTH:
 				self.player.sprite.rect.x = 0
 
-			# pacman eating-berry effect
+			# PacMan eating-berry effect
 			for berry in self.berries.sprites():
 				if self.player.sprite.rect.colliderect(berry.rect):
 					if berry.power_up:
-						print(True)
+						print(True) # convert to immunity and ability to eat ghost
+						self.player.sprite.pac_score += 50
+					else:
+						self.player.sprite.pac_score += 10
 					berry.kill()
-					self.player.sprite.pac_score += 10
 
-			# pacman getting captured by ghosts
+			# PacMan getting captured by ghosts
 			for ghost in self.ghosts.sprites():
 				if self.player.sprite.rect.colliderect(ghost.rect):
 					time.sleep(2)
@@ -97,7 +99,7 @@ class World:
 			if self.player.sprite.life == 0:
 				self.game_over = True
 
-			# reset Pac and Ghosts posiion after PacMan get captured
+			# reset Pac and Ghosts position after PacMan get captured
 			if self.reset_pos and not self.game_over:
 				[ghost.move_to_start_pos() for ghost in self.ghosts.sprites()]
 				self.player.sprite.move_to_start_pos()
