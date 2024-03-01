@@ -41,9 +41,18 @@ class World:
 					self.berries.add(Berry(x_index, y_index, CHAR_SIZE // 4))
 				elif char == "B":	# for big berries
 					self.berries.add(Berry(x_index, y_index, CHAR_SIZE // 2, is_power_up=True))
-				elif char == "g":	# for Ghosts's starting position 
-					self.ghosts.add(Ghost(x_index, y_index))
-				elif char == "p":	# for PacMan's starting position 
+
+				# for Ghosts's starting position
+				elif char == "s":
+					self.ghosts.add(Ghost(x_index, y_index, "skyblue"))
+				elif char == "p": 
+					self.ghosts.add(Ghost(x_index, y_index, "pink"))
+				elif char == "o":
+					self.ghosts.add(Ghost(x_index, y_index, "orange"))
+				elif char == "r":
+					self.ghosts.add(Ghost(x_index, y_index, "red"))
+
+				elif char == "P":	# for PacMan's starting position 
 					self.player.add(Pac(x_index, y_index))
 
 		self.walls_collide_list = [wall.rect for wall in self.walls.sprites()]
@@ -115,5 +124,3 @@ class World:
 			self.player.sprite.move_to_start_pos()
 			self.direction = (0,0)
 			self.reset_pos = False
-
-		print(self.player.sprite.immune)

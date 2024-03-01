@@ -5,14 +5,14 @@ import time
 from settings import WIDTH, CHAR_SIZE, GHOST_SPEED
 
 class Ghost(pygame.sprite.Sprite):
-	def __init__(self, row, col):
+	def __init__(self, row, col, color):
 		super().__init__()
 		self.abs_x = (row * CHAR_SIZE)
 		self.abs_y = (col * CHAR_SIZE)
 
 		self.rect = pygame.Rect(self.abs_x, self.abs_y, CHAR_SIZE, CHAR_SIZE)
 		self.pac_speed = GHOST_SPEED
-		self.color = pygame.Color("gray48")
+		self.color = pygame.Color(color)
 		self.move_directions = [(-1,0), (0,-1), (1,0), (0,1)]
 
 		self.directions = {'left': (-GHOST_SPEED, 0), 'right': (GHOST_SPEED, 0), 'up': (0, -GHOST_SPEED), 'down': (0, GHOST_SPEED)}
