@@ -58,8 +58,18 @@ class World:
 		self.walls_collide_list = [wall.rect for wall in self.walls.sprites()]
 
 
+	def generate_next_level(self):
+		for y_index, col in enumerate(MAP):
+			for x_index, char in enumerate(col):
+				if char == " ":	 # for paths to be filled with berries
+					self.berries.add(Berry(x_index, y_index, CHAR_SIZE // 4))
+				elif char == "B":	# for big berries
+					self.berries.add(Berry(x_index, y_index, CHAR_SIZE // 2, is_power_up=True))
+		time.sleep(2)
+
+
 	# display nav
-	def add_additionals(self):
+	def additionals(self):
 		pass
 
 
@@ -69,6 +79,23 @@ class World:
 			return False
 		return True
 
+
+	def check_game_state(self):
+		# checks if ge over
+		if self.player.sprite.life == 0:
+			self.game_over = True
+			# add restart here, no button for restart but auto restart once game over
+
+		# generates new level
+		if len(self.berries) == 0 and self.player.sprite.life > 0:
+			self.game_level += 1
+			self.generate_next_level()
+			for ghost in self.ghosts.sprites():
+				ghost.move_speed += self.game_level
+				ghost.move_to_start_pos()
+
+			self.player.sprite.move_to_start_pos()
+			self.generate_next_level()
 
 	def update(self):
 		# player movement
@@ -109,8 +136,7 @@ class World:
 						ghost.move_to_start_pos()
 						self.player.sprite.pac_score += 100
 
-			if self.player.sprite.life == 0:
-				self.game_over = True
+		self.check_game_state()
 
 		# rendering
 		[wall.update(self.screen) for wall in self.walls.sprites()]

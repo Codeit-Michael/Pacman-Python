@@ -11,11 +11,11 @@ class Ghost(pygame.sprite.Sprite):
 		self.abs_y = (col * CHAR_SIZE)
 
 		self.rect = pygame.Rect(self.abs_x, self.abs_y, CHAR_SIZE, CHAR_SIZE)
-		self.pac_speed = GHOST_SPEED
+		self.move_speed = GHOST_SPEED
 		self.color = pygame.Color(color)
 		self.move_directions = [(-1,0), (0,-1), (1,0), (0,1)]
 
-		self.directions = {'left': (-GHOST_SPEED, 0), 'right': (GHOST_SPEED, 0), 'up': (0, -GHOST_SPEED), 'down': (0, GHOST_SPEED)}
+		self.directions = {'left': (-self.move_speed, 0), 'right': (self.move_speed, 0), 'up': (0, -self.move_speed), 'down': (0, self.move_speed)}
 		self.keys = ['left', 'right', 'up', 'down']
 		self.direction = (0, 0)
 
