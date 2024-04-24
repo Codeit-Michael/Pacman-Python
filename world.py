@@ -1,11 +1,12 @@
 import pygame
 import time
 
-from settings import WIDTH, CHAR_SIZE, MAP, PLAYER_SPEED
+from settings import HEIGHT, WIDTH, NAV_HEIGHT, CHAR_SIZE, MAP, PLAYER_SPEED
 from pac import Pac
 from cell import Cell
 from berry import Berry
 from ghost import Ghost
+from display import Display
 
 class World:
 	def __init__(self, screen):
@@ -16,7 +17,7 @@ class World:
 		self.walls = pygame.sprite.Group()
 		self.berries = pygame.sprite.Group()
 
-		# self.display = Display(self.screen)
+		self.display = Display(self.screen)
 
 		self.game_over = False
 		self.reset_pos = False
@@ -69,18 +70,22 @@ class World:
 
 
 	# display nav
-	def additionals(self):
-		pass
+	def _dashboard(self):
+		nav = pygame.Rect(0, HEIGHT, WIDTH, NAV_HEIGHT)
+		pygame.draw.rect(self.screen, pygame.Color("cornsilk4"), nav)
+		
+		self.display.show_life(self.player.sprite.life)
+		self.display.show_score(self.player.sprite.pac_score)
+		self.display.show_level(self.game_level)
 
-
-	def is_collide(self, x, y):
+	def _is_collide(self, x, y):
 		tmp_rect = self.player.sprite.rect.move(x, y)
 		if tmp_rect.collidelist(self.walls_collide_list) == -1:
 			return False
 		return True
 
 
-	def check_game_state(self):
+	def _check_game_state(self):
 		# checks if ge over
 		if self.player.sprite.life == 0:
 			self.game_over = True
@@ -102,10 +107,10 @@ class World:
 		if not self.game_over:
 			pressed_key = pygame.key.get_pressed()
 			for key, key_value in self.keys.items():
-				if pressed_key[key_value] and not self.is_collide(*self.directions[key]):
+				if pressed_key[key_value] and not self._is_collide(*self.directions[key]):
 					self.direction = self.directions[key]
 					break
-			if not self.is_collide(*self.direction):
+			if not self._is_collide(*self.direction):
 				self.player.sprite.rect.move_ip(self.direction)
 
 			# teleporting to the other side of the map
@@ -118,7 +123,7 @@ class World:
 			for berry in self.berries.sprites():
 				if self.player.sprite.rect.colliderect(berry.rect):
 					if berry.power_up:
-						self.player.sprite.immune_time = 210 # convert to immunity and ability to eat ghost
+						self.player.sprite.immune_time = 150 # Timer based from FPS count
 						self.player.sprite.pac_score += 50
 					else:
 						self.player.sprite.pac_score += 10
@@ -136,13 +141,14 @@ class World:
 						ghost.move_to_start_pos()
 						self.player.sprite.pac_score += 100
 
-		self.check_game_state()
+		self._check_game_state()
 
 		# rendering
 		[wall.update(self.screen) for wall in self.walls.sprites()]
 		[berry.update(self.screen) for berry in self.berries.sprites()]
 		[ghost.update(self.screen, self.walls_collide_list) for ghost in self.ghosts.sprites()]
 		self.player.update(self.screen)
+		self._dashboard()
 
 		# reset Pac and Ghosts position after PacMan get captured
 		if self.reset_pos and not self.game_over:

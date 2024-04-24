@@ -1,10 +1,10 @@
 import pygame, sys
-from settings import WIDTH, HEIGHT
+from settings import WIDTH, HEIGHT, NAV_HEIGHT
 from world import World
 
 pygame.init()
 
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
+screen = pygame.display.set_mode((WIDTH, HEIGHT + NAV_HEIGHT))
 pygame.display.set_caption("PacMan")
 
 class Main:
