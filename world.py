@@ -75,8 +75,8 @@ class World:
 		pygame.draw.rect(self.screen, pygame.Color("cornsilk4"), nav)
 		
 		self.display.show_life(self.player.sprite.life)
-		self.display.show_score(self.player.sprite.pac_score)
 		self.display.show_level(self.game_level)
+		self.display.show_score(self.player.sprite.pac_score)
 
 	def _is_collide(self, x, y):
 		tmp_rect = self.player.sprite.rect.move(x, y)

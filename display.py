@@ -20,13 +20,14 @@ class Display:
 			for life in range(life):
 				self.screen.blit(life_image, (life_x, HEIGHT + (CHAR_SIZE // 2)))
 				life_x += CHAR_SIZE
-	
-	def show_score(self, score):
-		score_x = WIDTH // 3
-		score = self.font.render(f'score: {score}', True, self.text_color)
-		self.screen.blit(score, (score_x, (HEIGHT + (CHAR_SIZE // 2))))
-		
+
 	def show_level(self, level):
 		level_x = WIDTH // 3
 		level = self.font.render(f'Level {level}', True, self.text_color)
-		self.screen.blit(level, (level_x * 2, (HEIGHT + (CHAR_SIZE // 2))))
+		self.screen.blit(level, (level_x, (HEIGHT + (CHAR_SIZE // 2))))
+
+	def show_score(self, score):
+		score_x = WIDTH // 3
+		score = self.font.render(f'{score}', True, self.text_color)
+		self.screen.blit(score, (score_x * 2, (HEIGHT + (CHAR_SIZE // 2))))
+		
