@@ -15,6 +15,14 @@ class Ghost(pygame.sprite.Sprite):
 		self.color = pygame.Color(color)
 		self.move_directions = [(-1,0), (0,-1), (1,0), (0,1)]
 
+		self.moving_dir = "up"
+		self.img_path = f'assets/ghosts/{color}/'
+		self.img_name = f'{self.moving_dir}.png'
+		self.image = pygame.image.load(self.img_path + self.img_name)
+		self.image = pygame.transform.scale(self.image, (CHAR_SIZE, CHAR_SIZE))
+		self.rect = self.image.get_rect(topleft = (self.abs_x, self.abs_y))
+		self.mask = pygame.mask.from_surface(self.image)
+
 		self.directions = {'left': (-self.move_speed, 0), 'right': (self.move_speed, 0), 'up': (0, -self.move_speed), 'down': (0, self.move_speed)}
 		self.keys = ['left', 'right', 'up', 'down']
 		self.direction = (0, 0)
@@ -29,8 +37,13 @@ class Ghost(pygame.sprite.Sprite):
 			return False
 		return True
 
+	def _animate(self):
+		self.img_name = f'{self.moving_dir}.png'
+		self.image = pygame.image.load(self.img_path + self.img_name)
+		self.image = pygame.transform.scale(self.image, (CHAR_SIZE, CHAR_SIZE))
+		self.rect = self.image.get_rect(topleft=(self.rect.x, self.rect.y))
 
-	def update(self, screen, walls_collide_list):
+	def update(self, walls_collide_list):
 		# ghost movement
 		available_moves = []
 		for key in self.keys:
@@ -40,7 +53,8 @@ class Ghost(pygame.sprite.Sprite):
 		randomizing = False if len(available_moves) <= 2 and self.direction != (0,0) else True
 		# 60% chance of randomizing ghost move
 		if randomizing and random.randrange( 0,100 ) <= 60:
-			self.direction = self.directions[random.choice(available_moves)]
+			self.moving_dir = random.choice(available_moves)
+			self.direction = self.directions[self.moving_dir]
 
 		if not self.is_collide(*self.direction, walls_collide_list):
 			self.rect.move_ip(self.direction)
@@ -53,4 +67,4 @@ class Ghost(pygame.sprite.Sprite):
 		elif self.rect.left >= WIDTH:
 			self.rect.x = 0
 
-		pygame.draw.rect(screen, self.color, self.rect)
+		self._animate()

@@ -105,6 +105,7 @@ class World:
 	def update(self):
 		# player movement
 		if not self.game_over:
+			# migate to pac.py
 			pressed_key = pygame.key.get_pressed()
 			for key, key_value in self.keys.items():
 				if pressed_key[key_value] and not self._is_collide(*self.directions[key]):
@@ -146,8 +147,10 @@ class World:
 		# rendering
 		[wall.update(self.screen) for wall in self.walls.sprites()]
 		[berry.update(self.screen) for berry in self.berries.sprites()]
-		[ghost.update(self.screen, self.walls_collide_list) for ghost in self.ghosts.sprites()]
-		self.player.update(self.screen)
+		[ghost.update(self.walls_collide_list) for ghost in self.ghosts.sprites()]
+		self.player.update()
+		self.ghosts.draw(self.screen)
+		self.player.draw(self.screen)
 		self._dashboard()
 
 		# reset Pac and Ghosts position after PacMan get captured
