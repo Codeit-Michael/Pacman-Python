@@ -24,10 +24,6 @@ class World:
 		self.player_score = 0
 		self.game_level = 1
 
-		self.directions = {'left': (-PLAYER_SPEED, 0), 'right': (PLAYER_SPEED, 0), 'up': (0, -PLAYER_SPEED), 'down': (0, PLAYER_SPEED)}
-		self.keys = {'left': pygame.K_LEFT, 'right': pygame.K_RIGHT, 'up': pygame.K_UP, 'down': pygame.K_DOWN}
-		self.direction = (0, 0)
-
 		self._generate_world()
 
 
@@ -78,12 +74,6 @@ class World:
 		self.display.show_level(self.game_level)
 		self.display.show_score(self.player.sprite.pac_score)
 
-	def _is_collide(self, x, y):
-		tmp_rect = self.player.sprite.rect.move(x, y)
-		if tmp_rect.collidelist(self.walls_collide_list) == -1:
-			return False
-		return True
-
 
 	def _check_game_state(self):
 		# checks if ge over
@@ -100,19 +90,15 @@ class World:
 				ghost.move_to_start_pos()
 
 			self.player.sprite.move_to_start_pos()
+			self.player.sprite.direction = (0, 0)
 			self.generate_next_level()
 
+
 	def update(self):
-		# player movement
 		if not self.game_over:
-			# migate to pac.py
+			# player movement
 			pressed_key = pygame.key.get_pressed()
-			for key, key_value in self.keys.items():
-				if pressed_key[key_value] and not self._is_collide(*self.directions[key]):
-					self.direction = self.directions[key]
-					break
-			if not self._is_collide(*self.direction):
-				self.player.sprite.rect.move_ip(self.direction)
+			self.player.sprite.animate(pressed_key, self.walls_collide_list)
 
 			# teleporting to the other side of the map
 			if self.player.sprite.rect.right <= 0:
@@ -148,14 +134,16 @@ class World:
 		[wall.update(self.screen) for wall in self.walls.sprites()]
 		[berry.update(self.screen) for berry in self.berries.sprites()]
 		[ghost.update(self.walls_collide_list) for ghost in self.ghosts.sprites()]
-		self.player.update()
 		self.ghosts.draw(self.screen)
+
+		self.player.update()
 		self.player.draw(self.screen)
+
 		self._dashboard()
 
 		# reset Pac and Ghosts position after PacMan get captured
 		if self.reset_pos and not self.game_over:
 			[ghost.move_to_start_pos() for ghost in self.ghosts.sprites()]
 			self.player.sprite.move_to_start_pos()
-			self.direction = (0,0)
+			self.player.sprite.direction = (0,0)
 			self.reset_pos = False
