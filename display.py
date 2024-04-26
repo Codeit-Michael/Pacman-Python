@@ -8,6 +8,7 @@ class Display:
 	def __init__(self, screen):
 		self.screen = screen
 		self.font = pygame.font.SysFont("ubuntumono", CHAR_SIZE)
+		self.game_over_font = pygame.font.SysFont("dejavusansmono", 48)
 		self.text_color = pygame.Color("crimson")
 				
 	def show_life(self, life):
@@ -33,4 +34,7 @@ class Display:
 
 	# add game over message
 	def game_over(self):
-		pass		
+		message = self.game_over_font.render(f'GAME OVER!!', True, pygame.Color("chartreuse"))
+		instruction = self.font.render(f'Press "R" to Restart', True, pygame.Color("aqua"))
+		self.screen.blit(message, ((WIDTH // 4), (HEIGHT // 3)))
+		self.screen.blit(instruction, ((WIDTH // 4), (HEIGHT // 2)))

@@ -55,7 +55,7 @@ class World:
 		self.walls_collide_list = [wall.rect for wall in self.walls.sprites()]
 
 
-	def generate_next_level(self):
+	def generate_new_level(self):
 		for y_index, col in enumerate(MAP):
 			for x_index, char in enumerate(col):
 				if char == " ":	 # for paths to be filled with berries
@@ -65,7 +65,19 @@ class World:
 		time.sleep(2)
 
 
-	# display nav
+	def restart_level(self):
+		self.berries.empty()
+		[ghost.move_to_start_pos() for ghost in self.ghosts.sprites()]
+		self.game_level = 1
+		self.player.sprite.pac_score = 0
+		self.player.sprite.life = 3
+		self.player.sprite.move_to_start_pos()
+		self.player.sprite.direction = (0, 0)
+		self.player.sprite.status = "idle"
+		self.generate_new_level()
+
+
+	# displays nav
 	def _dashboard(self):
 		nav = pygame.Rect(0, HEIGHT, WIDTH, NAV_HEIGHT)
 		pygame.draw.rect(self.screen, pygame.Color("cornsilk4"), nav)
@@ -76,15 +88,13 @@ class World:
 
 
 	def _check_game_state(self):
-		# checks if ge over
+		# checks if game over
 		if self.player.sprite.life == 0:
 			self.game_over = True
-			# add restart here, no button for restart but auto restart once game over
 
 		# generates new level
 		if len(self.berries) == 0 and self.player.sprite.life > 0:
 			self.game_level += 1
-			self.generate_next_level()
 			for ghost in self.ghosts.sprites():
 				ghost.move_speed += self.game_level
 				ghost.move_to_start_pos()
@@ -92,7 +102,7 @@ class World:
 			self.player.sprite.move_to_start_pos()
 			self.player.sprite.direction = (0, 0)
 			self.player.sprite.status = "idle"
-			self.generate_next_level()
+			self.generate_new_level()
 
 
 	def update(self):
@@ -139,6 +149,7 @@ class World:
 
 		self.player.update()
 		self.player.draw(self.screen)
+		self.display.game_over() if self.game_over else None
 
 		self._dashboard()
 
@@ -149,3 +160,10 @@ class World:
 			self.player.sprite.status = "idle"
 			self.player.sprite.direction = (0,0)
 			self.reset_pos = False
+
+		# for restart button
+		if self.game_over:
+			pressed_key = pygame.key.get_pressed()
+			if pressed_key[pygame.K_r]:
+				self.game_over = False
+				self.restart_level()
