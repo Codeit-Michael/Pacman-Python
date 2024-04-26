@@ -1,6 +1,7 @@
 import pygame
 
 from settings import CHAR_SIZE, PLAYER_SPEED
+from animation import import_sprite
 
 class Pac(pygame.sprite.Sprite):
 	def __init__(self, row, col):
@@ -10,9 +11,16 @@ class Pac(pygame.sprite.Sprite):
 		self.abs_y = (col * CHAR_SIZE)
 
 		# pac animation
-		img_path = 'assets/pac/idle/0.png'
-		self.image = pygame.image.load(img_path)
-		self.image = pygame.transform.scale(self.image, (CHAR_SIZE, CHAR_SIZE))
+		# img_path = 'assets/pac/idle/0.png'
+		# self.image = pygame.image.load(img_path)
+		# self.image = pygame.transform.scale(self.image, (CHAR_SIZE, CHAR_SIZE))
+		# self.rect = self.image.get_rect(topleft = (self.abs_x, self.abs_y))
+		# self.mask = pygame.mask.from_surface(self.image)
+		# replacement
+		self._import_character_assets()
+		self.frame_index = 0
+		self.animation_speed = 0.5
+		self.image = self.animations["idle"][self.frame_index]
 		self.rect = self.image.get_rect(topleft = (self.abs_x, self.abs_y))
 		self.mask = pygame.mask.from_surface(self.image)
 
@@ -25,8 +33,26 @@ class Pac(pygame.sprite.Sprite):
 		self.direction = (0, 0)
 	
 		# pac status
+		self.status = "idle"
 		self.life = 3
 		self.pac_score = 0
+
+
+	# gets all the image needed for animating specific player action
+	def _import_character_assets(self):
+		character_path = "assets/pac/"
+		self.animations = {
+			"up": [],
+			"down": [],
+			"left": [],
+			"right": [],
+			"idle": [],
+			"bitten": []
+		}
+		for animation in self.animations.keys():
+			full_path = character_path + animation
+			self.animations[animation] = import_sprite(full_path)
+
 
 	def _is_collide(self, x, y):
 		tmp_rect = self.rect.move(x, y)
@@ -34,19 +60,34 @@ class Pac(pygame.sprite.Sprite):
 			return False
 		return True
 
+
 	def move_to_start_pos(self):
 		self.rect.x = self.abs_x
 		self.rect.y = self.abs_y
 
+
 	# update with sprite/sheets
 	def animate(self, pressed_key, walls_collide_list):
+		animation = self.animations[self.status]
+
+		# loop over frame index
+		self.frame_index += self.animation_speed
+		if self.frame_index >= len(animation):
+			self.frame_index = 0
+		image = animation[int(self.frame_index)]
+		self.image = pygame.transform.scale(image, (CHAR_SIZE, CHAR_SIZE))
+
 		self.walls_collide_list = walls_collide_list
 		for key, key_value in self.keys.items():
 			if pressed_key[key_value] and not self._is_collide(*self.directions[key]):
 				self.direction = self.directions[key]
+				self.status = key
 				break
 		if not self._is_collide(*self.direction):
 			self.rect.move_ip(self.direction)
+		else:
+			self.status = "idle"
+
 
 	def update(self):
 		# Timer based from FPS count

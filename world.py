@@ -91,6 +91,7 @@ class World:
 
 			self.player.sprite.move_to_start_pos()
 			self.player.sprite.direction = (0, 0)
+			self.player.sprite.status = "idle"
 			self.generate_next_level()
 
 
@@ -116,7 +117,7 @@ class World:
 						self.player.sprite.pac_score += 10
 					berry.kill()
 
-			# PacMan getting captured by ghosts
+			# PacMan bumping into ghosts
 			for ghost in self.ghosts.sprites():
 				if self.player.sprite.rect.colliderect(ghost.rect):
 					if not self.player.sprite.immune:
@@ -145,5 +146,6 @@ class World:
 		if self.reset_pos and not self.game_over:
 			[ghost.move_to_start_pos() for ghost in self.ghosts.sprites()]
 			self.player.sprite.move_to_start_pos()
+			self.player.sprite.status = "idle"
 			self.player.sprite.direction = (0,0)
 			self.reset_pos = False
