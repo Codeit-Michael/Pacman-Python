@@ -30,4 +30,7 @@ class Display:
 		score_x = WIDTH // 3
 		score = self.font.render(f'{score}', True, self.text_color)
 		self.screen.blit(score, (score_x * 2, (HEIGHT + (CHAR_SIZE // 2))))
-		
+
+	# add game over message
+	def game_over(self):
+		pass		

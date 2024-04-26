@@ -11,12 +11,6 @@ class Pac(pygame.sprite.Sprite):
 		self.abs_y = (col * CHAR_SIZE)
 
 		# pac animation
-		# img_path = 'assets/pac/idle/0.png'
-		# self.image = pygame.image.load(img_path)
-		# self.image = pygame.transform.scale(self.image, (CHAR_SIZE, CHAR_SIZE))
-		# self.rect = self.image.get_rect(topleft = (self.abs_x, self.abs_y))
-		# self.mask = pygame.mask.from_surface(self.image)
-		# replacement
 		self._import_character_assets()
 		self.frame_index = 0
 		self.animation_speed = 0.5
@@ -47,7 +41,7 @@ class Pac(pygame.sprite.Sprite):
 			"left": [],
 			"right": [],
 			"idle": [],
-			"bitten": []
+			"power_up": []
 		}
 		for animation in self.animations.keys():
 			full_path = character_path + animation
@@ -81,12 +75,14 @@ class Pac(pygame.sprite.Sprite):
 		for key, key_value in self.keys.items():
 			if pressed_key[key_value] and not self._is_collide(*self.directions[key]):
 				self.direction = self.directions[key]
-				self.status = key
+				self.status = key if not self.immune else "power_up"
 				break
+		
 		if not self._is_collide(*self.direction):
 			self.rect.move_ip(self.direction)
-		else:
-			self.status = "idle"
+			self.status = self.status if not self.immune else "power_up"
+		if self._is_collide(*self.direction):
+			self.status = "idle" if not self.immune else "power_up"
 
 
 	def update(self):
